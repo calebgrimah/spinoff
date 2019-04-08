@@ -52,8 +52,8 @@ public class TransactionController {
         Optional<Transaction> byTransactionId = repository.findByTransactionId(transactionId);
         if(byTransactionId.isPresent()){
             Transaction transaction = byTransactionId.get();
-
-            if(transaction.isTransactionSuccessful()){
+            if(transaction.getIsTransactionSuccessful() == 1){
+                //successful
                 Optional<Employer> byEmployerId = employerRepository.findByEmployerId(transaction.getEmployerId());
                 if(byEmployerId.isPresent()){
                 //send mail here

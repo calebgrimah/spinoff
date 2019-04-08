@@ -18,5 +18,5 @@ public class Transaction {
     private String employeeId;
     private String companyName;
     private String transactionDate;
-    private boolean isTransactionSuccessful;
+    private Integer isTransactionSuccessful;
 }
