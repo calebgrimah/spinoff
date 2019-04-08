@@ -39,6 +39,11 @@ public class TransactionController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @GetMapping("spinoff/test")
+    public ResponseEntity<?> test(){
+        return new ResponseEntity<>("Hooray",HttpStatus.OK);
+    }
+
 
 
     @GetMapping("spinoff/verification/{transactionId}")
