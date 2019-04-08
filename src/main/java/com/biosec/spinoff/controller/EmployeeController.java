@@ -25,14 +25,8 @@ public class EmployeeController {
 
     @PostMapping("spinoff/register")
     public ResponseEntity<?> register(@RequestBody Employee employee){
-//        Optional<Employer> em = employerRepository.findByEmployerId(employee.getEmployerId());
-//        if(em.isPresent()){
-//            Employer employer = em.get();
-//
             employeeRepository.save(employee);
             return new ResponseEntity<>(employee,HttpStatus.CREATED);
-
-//        }
     }
 
     @GetMapping("spinoff/single/{employeeId}")
