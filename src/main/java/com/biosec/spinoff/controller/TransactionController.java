@@ -1,9 +1,7 @@
 package com.biosec.spinoff.controller;
 import com.biosec.spinoff.EmailCfg;
-import com.biosec.spinoff.model.Employee;
-import com.biosec.spinoff.model.Employer;
-import com.biosec.spinoff.model.Feedback;
-import com.biosec.spinoff.model.Transaction;
+import com.biosec.spinoff.model.*;
+import com.biosec.spinoff.repository.CaseMsREpository;
 import com.biosec.spinoff.repository.EmployeeRepository;
 import com.biosec.spinoff.repository.EmployerRepository;
 import com.biosec.spinoff.repository.TransactionRepository;
@@ -11,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -22,15 +19,17 @@ public class TransactionController {
     private TransactionRepository repository;
     private EmployerRepository employerRepository;
     private EmployeeRepository employeeRepository;
+    private CaseMsREpository caseMsREpository;
     private EmailCfg emailCfg;
 
     public TransactionController(TransactionRepository repository,
                                  EmployerRepository employerRepository,
                                  EmployeeRepository employeeRepository,
-                                 EmailCfg emailCfg) {
+                                 CaseMsREpository caseMsREpository, EmailCfg emailCfg) {
         this.repository = repository;
         this.employerRepository = employerRepository;
         this.employeeRepository = employeeRepository;
+        this.caseMsREpository = caseMsREpository;
         this.emailCfg = emailCfg;
     }
 
@@ -60,8 +59,26 @@ public class TransactionController {
                 //send mail here
                     Optional<Employee> byEmployeeId = employeeRepository.findByEmployeeId(transaction.getEmployeeId());
                     if(byEmployeeId.isPresent()){
-                        sendFeedback(new Feedback("This has been Verified with no Criminal Data","policeCriminalDb@policenpf.com",byEmployeeId.get()));
-                        return new ResponseEntity<>(HttpStatus.OK);
+                        //employee is present
+                        Employee employee = byEmployeeId.get();
+                        //check the field for the integer value and return the values as expected
+                        if(employee.getCriminalValue() == 1){
+                            CriminalRecordClass criminalRecordClass = new CriminalRecordClass();
+                            criminalRecordClass.setEmployee(employee);
+                            CaseMS caseMS = caseMsREpository.findByEnrollmentId("456").get();
+                            criminalRecordClass.setCriminalData(caseMS);
+                            sendFeedback(new Feedback("Individual has criminal Record","police@email.com",criminalRecordClass));
+                            return new ResponseEntity<>(criminalRecordClass,HttpStatus.OK);
+                        }else if (employee.getCriminalValue() == 2){
+                            CriminalRecordClass criminalRecordClass = new CriminalRecordClass();
+                            criminalRecordClass.setEmployee(employee);
+                            criminalRecordClass.setCriminalData(null);
+                            sendFeedback(new Feedback("Individual has no criminal Record", "police@email.com",criminalRecordClass));
+                            return new ResponseEntity<>(criminalRecordClass,HttpStatus.OK);
+                        }else {
+                            sendFeedback(new Feedback("This has been Verified with no police record","police@email.com",null));
+                            return new ResponseEntity<>(HttpStatus.OK);
+                        }
                     }
 
                 }
@@ -87,8 +104,8 @@ public class TransactionController {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(feedback.getEmail());
         mailMessage.setTo("lamahgrimah@gmail.com");
-        mailMessage.setSubject("New feedback from spinoff project");
-        mailMessage.setText(feedback.getEmployee().getFirstname() + " is not in the police Database");
+        mailMessage.setSubject("Response from background check");
+        mailMessage.setText(feedback.getMessage());
 
 
         // Send mail

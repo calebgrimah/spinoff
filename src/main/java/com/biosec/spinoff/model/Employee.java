@@ -24,4 +24,5 @@ public class Employee {
     private String addressLine;
     private String employeeId;
     private String employerId;
+    private Integer criminalValue;
 }

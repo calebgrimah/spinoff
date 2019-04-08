@@ -8,5 +8,5 @@ import lombok.Data;
 public class Feedback {
     private String message;
     private String email;
-    private Employee employee;
+    private CriminalRecordClass employee;
 }
