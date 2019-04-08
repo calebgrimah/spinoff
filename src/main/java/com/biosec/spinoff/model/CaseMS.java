@@ -35,6 +35,4 @@ public class CaseMS {
     @JsonProperty("Warrants")
     @OneToMany(cascade = CascadeType.ALL)
     private List<WarrantsItem> warrants = new ArrayList<>();
-
-
 }
