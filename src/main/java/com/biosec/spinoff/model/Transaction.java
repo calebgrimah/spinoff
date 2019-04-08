@@ -19,4 +19,5 @@ public class Transaction {
     private String companyName;
     private String transactionDate;
     private Integer isTransactionSuccessful;
+    private Integer paymentStatus;
 }
