@@ -27,4 +27,5 @@ public class Employer {
     private String webUrl;
     private String managementOfficialName;
     private String employerId;
+    private String phone;
 }
