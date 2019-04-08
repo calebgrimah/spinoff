@@ -65,7 +65,7 @@ public class TransactionController {
                         if(employee.getCriminalValue() == 1){
                             CriminalRecordClass criminalRecordClass = new CriminalRecordClass();
                             criminalRecordClass.setEmployee(employee);
-                            CaseMS caseMS = caseMsREpository.findByEnrollmentId("456").get();
+                            CaseMS caseMS = caseMsREpository.findByEnrollmentID("456").get();
                             criminalRecordClass.setCriminalData(caseMS);
                             sendFeedback(new Feedback("Individual has criminal Record","police@email.com",criminalRecordClass));
                             return new ResponseEntity<>(criminalRecordClass,HttpStatus.OK);
