@@ -18,6 +18,6 @@ public class Transaction {
     private String employeeId;
     private String companyName;
     private String transactionDate;
-    private Integer isTransactionSuccessful;
+    private boolean isTransactionSuccessful;
     private Integer paymentStatus;
 }
