@@ -6,9 +6,7 @@ import com.biosec.spinoff.repository.EmployeeRepository;
 import com.biosec.spinoff.repository.EmployerRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -35,5 +33,12 @@ public class EmployeeController {
             return new ResponseEntity<>(employee,HttpStatus.CREATED);
 
 //        }
+    }
+
+    @GetMapping("spinoff/single/{employeeId}")
+    public ResponseEntity<?> getSingleEmployee(@PathVariable String employeeId){
+        Optional<Employee> byEmployeeId = employeeRepository.findByEmployeeId(employeeId);
+        if(byEmployeeId.isPresent()) return new ResponseEntity<>(byEmployeeId.get(),HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

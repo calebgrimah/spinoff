@@ -79,7 +79,10 @@ public class TransactionController {
                             sendFeedback(new Feedback("This has been Verified with no police record","police@email.com",null));
                             return new ResponseEntity<>(HttpStatus.OK);
                         }
+                    }else {
+                        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                     }
+
 
                 }
             }
