@@ -1,5 +1,6 @@
 package com.biosec.spinoff.controller;
 import com.biosec.spinoff.EmailCfg;
+import com.biosec.spinoff.model.Employee;
 import com.biosec.spinoff.model.Employer;
 import com.biosec.spinoff.model.Feedback;
 import com.biosec.spinoff.model.Transaction;
@@ -52,10 +53,16 @@ public class TransactionController {
         Optional<Transaction> byTransactionId = repository.findByTransactionId(transactionId);
         if(byTransactionId.isPresent()){
             Transaction transaction = byTransactionId.get();
+
             if(transaction.isTransactionSuccessful()){
                 Optional<Employer> byEmployerId = employerRepository.findByEmployerId(transaction.getEmployerId());
                 if(byEmployerId.isPresent()){
                 //send mail here
+                    Optional<Employee> byEmployeeId = employeeRepository.findByEmployeeId(transaction.getEmployeeId());
+                    if(byEmployeeId.isPresent()){
+                        sendFeedback(new Feedback("This has been Verified with no Criminal Data","policeCriminalDb@policenpf.com",byEmployeeId.get()));
+                        return new ResponseEntity<>(HttpStatus.OK);
+                    }
 
                 }
             }
