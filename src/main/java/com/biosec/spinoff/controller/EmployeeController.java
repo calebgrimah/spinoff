@@ -32,7 +32,7 @@ public class EmployeeController {
 //            Employer employer = em.get();
 //
             employeeRepository.save(employee);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(employee,HttpStatus.CREATED);
 
 //        }
     }
