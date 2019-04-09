@@ -67,16 +67,22 @@ public class TransactionController {
                             criminalRecordClass.setEmployee(employee);
                             CaseMS caseMS = caseMsREpository.findByEnrollmentID("456").get();
                             criminalRecordClass.setCriminalData(caseMS);
-                            sendFeedback(new Feedback("Individual has criminal Record with the police","police@email.com",criminalRecordClass));
+                            sendFeedback(new Feedback("Individual with name " + employee.getFirstname() + " " + employee.getLastname()
+                                    + " has criminal Record with the police" + " \n . The details of the record are as follows: \n " +
+                                    "Number of Convictions: " + caseMS.getNumberOfConvictions() + " \n " +
+                                    "\t Offence : " + caseMS.getConvictions().get(0).getOffence() + "\n " +
+                                    "\t Offence: " + caseMS.getConvictions().get(1).getOffence() + "\n\n" +
+                                    "Warrants : " + caseMS.getWarrants().get(0).getReason()+ ", " + caseMS.getWarrants().get(1).getReason() + "\n\n" +
+                                    "Case Record : " + caseMS.getCaseRecords().get(0).getPrimaryCharge() + "Thank You","police@email.com",criminalRecordClass),byEmployerId.get().getEmail());
                             return new ResponseEntity<>(criminalRecordClass,HttpStatus.OK);
                         }else if (employee.getCriminalValue() == 2){
                             CriminalRecordClass criminalRecordClass = new CriminalRecordClass();
                             criminalRecordClass.setEmployee(employee);
                             criminalRecordClass.setCriminalData(null);
-                            sendFeedback(new Feedback("Individual has no criminal Record", "police@email.com",criminalRecordClass));
+                            sendFeedback(new Feedback("Individual with name "+ employee.getFirstname() + employee.getLastname() + " has no criminal Record", "police@email.com",criminalRecordClass),byEmployerId.get().getEmail());
                             return new ResponseEntity<>(criminalRecordClass,HttpStatus.OK);
                         }else {
-                            sendFeedback(new Feedback("This has been Verified with no police record","police@email.com",null));
+                            sendFeedback(new Feedback("This has been Verified with no police record","police@email.com",null),byEmployerId.get().getEmail());
                             return new ResponseEntity<>(HttpStatus.ACCEPTED);
                         }
                     }else {
@@ -93,7 +99,7 @@ public class TransactionController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    private void sendFeedback(Feedback feedback){
+    private void sendFeedback(Feedback feedback, String employerMail){
         // Create a mail sender
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(this.emailCfg.getHost());
@@ -106,9 +112,9 @@ public class TransactionController {
         // Create an email instance
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(feedback.getEmail());
-        mailMessage.setTo("lamahgrimah@gmail.com");
+        mailMessage.setTo(employerMail);
         mailMessage.setSubject("Response from background check");
-        mailMessage.setText(feedback.getMessage() + feedback.getEmployee());
+        mailMessage.setText(feedback.getMessage());
 
 
         // Send mail
