@@ -67,11 +67,11 @@ public class TransactionController {
                             criminalRecordClass.setEmployee(employee);
                             CaseMS caseMS = caseMsREpository.findByEnrollmentID("456").get();
                             criminalRecordClass.setCriminalData(caseMS);
-                            sendFeedback(new Feedback("Individual with name " + employee.getFirstname() + " " + employee.getLastname()
-                                    + " has criminal Record with the police" + " \n . The details of the record are as follows: \n " +
+                            sendFeedback(new Feedback("Individual with name " + employee.getFirstname() + " " + employee.getLastname() + " has a criminal record"
+                                    + /*" has criminal Record with the police" + " \n . The details of the record are as follows: \n " +
                                     "Number of Convictions: " + caseMS.getNumberOfConvictions() + " \n " +
                                     "\t Offence : " + caseMS.getConvictions().get(0).getOffence() + "\n " +
-                                    "\t Offence: " + caseMS.getConvictions().get(0).getOffence() + "\n\n" + "Thank You","police@email.com",criminalRecordClass),byEmployerId.get().getEmail());
+                                    "\t Offence: " + caseMS.getConvictions().get(0).getOffence() + "\n\n" +*/ "Thank You","police@email.com",criminalRecordClass),byEmployerId.get().getEmail());
                             return new ResponseEntity<>(criminalRecordClass,HttpStatus.OK);
                         }else if (employee.getCriminalValue() == 2){
                             CriminalRecordClass criminalRecordClass = new CriminalRecordClass();
