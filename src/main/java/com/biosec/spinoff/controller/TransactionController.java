@@ -71,9 +71,7 @@ public class TransactionController {
                                     + " has criminal Record with the police" + " \n . The details of the record are as follows: \n " +
                                     "Number of Convictions: " + caseMS.getNumberOfConvictions() + " \n " +
                                     "\t Offence : " + caseMS.getConvictions().get(0).getOffence() + "\n " +
-                                    "\t Offence: " + caseMS.getConvictions().get(1).getOffence() + "\n\n" +
-                                    "Warrants : " + caseMS.getWarrants().get(0).getReason()+ ", " + caseMS.getWarrants().get(1).getReason() + "\n\n" +
-                                    "Case Record : " + caseMS.getCaseRecords().get(0).getPrimaryCharge() + "Thank You","police@email.com",criminalRecordClass),byEmployerId.get().getEmail());
+                                    "\t Offence: " + caseMS.getConvictions().get(0).getOffence() + "\n\n" + "Thank You","police@email.com",criminalRecordClass),byEmployerId.get().getEmail());
                             return new ResponseEntity<>(criminalRecordClass,HttpStatus.OK);
                         }else if (employee.getCriminalValue() == 2){
                             CriminalRecordClass criminalRecordClass = new CriminalRecordClass();
